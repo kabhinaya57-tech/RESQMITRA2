@@ -1,0 +1,25 @@
+RESQ-MITRA source archive verification log
+Generated: 2026-10-16
+
+Environment checks:
+- Node.js: v22.16.0 available.
+- npm: 10.9.2 available.
+- Flutter SDK: NOT AVAILABLE (`flutter: command not found`).
+- Dart SDK: NOT AVAILABLE (`dart: command not found`).
+
+Flutter checks requested by the project:
+- flutter pub get: NOT RUN — Flutter SDK unavailable.
+- dart format --output=none --set-exit-if-changed lib test: NOT RUN — Dart SDK unavailable.
+- flutter analyze: NOT RUN — Flutter SDK unavailable.
+- flutter test: NOT RUN — Flutter SDK unavailable.
+- flutter build apk --debug: NOT RUN — Flutter SDK unavailable.
+
+Cloud Functions checks:
+- `npm install --ignore-scripts --no-audit --no-fund`: TIMED OUT in this environment while attempting dependency installation.
+- `tsc --noEmit --pretty false`: BLOCKED because firebase-admin and firebase-functions dependencies could not be installed. TypeScript parsing reached module/type checking and reported missing modules plus consequent implicit-any diagnostics; this is not a successful compile.
+
+Static archive checks:
+- JSON syntax validation for firebase.json, functions/package.json, functions/tsconfig.json, firestore.indexes.json, and database.schema.json: PASS.
+- ZIP integrity: checked during packaging.
+
+Important: this log intentionally does not claim that Flutter tests, APK compilation, TypeScript compilation, Firebase emulator tests, or live emergency delivery passed. Run the GitHub Actions workflow or the documented commands in a Flutter-enabled environment and configure a Firebase project before integration testing.

@@ -1,41 +1,38 @@
-<<<<<<< HEAD
-# RESQ MITRA — Flutter starter source
+# RESQ-MITRA — emergency response Flutter development build
 
-This starter implements the first requested app flow:
+Branded emergency-response application with General SOS, Women SOS, Child SOS, Blood Needed (A+, A-, B+, B-, AB+, AB-, O+, O-), a confirmation flow, DO NOT CALL preference, location capture, responder queue UI, and Firebase-backed incident operations.
 
-1. Animated splash screen with app name, rotating HELP / PROTECT / SUPPORT / TOGETHER tagline, and loading indicator.
-2. Create-account / login UI with phone, email, and password fields. A local preference remembers the demo login so the auth page is skipped on the next launch.
-3. Role selection: HELP SEEKER or VOLUNTEER AS RESCUE RESPONDER, followed by GET STARTED.
-4. Home screen with a pulsing red SOS button and permanent HOME / MAP / HISTORY / BADGES / PROFILE navigation.
-5. SOS chooser for GENERAL SOS (blue), WOMEN SOS (pink), and CHILD SOS (yellow).
-6. SQLite local SOS history, JSON app configuration, and geolocator coordinate lookup.
+**Safety notice:** This is a development candidate, not a certified emergency dispatch service. Push notifications, SMS, automated calling, live map tiles, and a durable offline queue are not implemented. In an immediate emergency, contact the appropriate official emergency service. Do not assume a request reached a responder unless the app explicitly confirms the relevant delivery state.
 
-## Run it
+## Run
 
-1. Install Flutter SDK and Android Studio, then ensure `flutter doctor` passes.
-2. If using this as a fresh project, from this folder run `flutter create .` to generate platform folders (or copy `lib/`, `assets/`, and `pubspec.yaml` into your existing Flutter project).
-3. Add the two location permissions shown in `android_setup/AndroidManifest_permissions.xml` inside `android/app/src/main/AndroidManifest.xml`, directly under the `<manifest>` element.
-4. Run:
+Install Flutter stable and Android Studio, then:
 
-   ```bash
-   flutter pub get
-   flutter run
-   ```
+```bash
+flutter pub get
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze
+flutter test
+flutter build apk --debug
+```
 
-## Important before production
+If Android platform files are missing, run `flutter create . --platforms=android` from the project root, then rerun the commands.
 
-- The uploaded media was a video, and its first frame did not show a usable standalone logo asset. The splash currently uses a built-in safety icon as a placeholder. Replace it with your logo asset when you provide a PNG/SVG image.
-- Authentication is a UI/demo flow only. It does not verify credentials and stores a local logged-in flag. Connect Firebase Authentication or a trusted backend before real use.
-- SOS events are stored on the device and coordinates are read when permission is granted. This starter does **not** dispatch SOS alerts, SMS, calls, or notifications to responders/emergency services. Add and test a real emergency backend before relying on it.
-- The map page currently displays coordinates rather than an interactive map. The BADGES page is a placeholder for the next development phase.
-- Test location permission behavior on a real Android device. Never use this starter as the sole emergency response system.
+## Firebase
 
-## Files
+Follow `docs/FIREBASE_SETUP.md`. Firebase Email/Password authentication is used when Firebase is configured. Without Firebase, the app allows local exploration only and clearly reports that SOS is not delivered.
 
-- `lib/main.dart` — Flutter screens, navigation, SOS flow, location lookup and SQLite history.
-- `assets/data/app_data.json` — app text, roles, SOS types and dashboard labels.
-- `android_setup/AndroidManifest_permissions.xml` — Android location permission snippet.
-=======
-# RESQMITRA2
-FIRT RESPONDER
->>>>>>> origin/main
+Cloud Functions are under `functions/`. The trusted backend implements idempotent incident creation, separate private incident details, atomic responder claiming, and authorized status updates. Deploy only after configuring your own Firebase project and testing with emulators.
+
+## Source structure
+
+- `lib/main.dart` — existing app UI and navigation
+- `lib/models/` — typed user, responder, and emergency models
+- `lib/services/` — authentication and server-authoritative responder/SOS services
+- `functions/src/index.ts` — callable backend functions
+- `firestore.rules` — restrictive client access rules
+- `docs/` — setup and release acceptance criteria
+
+## Known limitations
+
+The app is not production-ready solely because it compiles. Review `docs/PRODUCTION_ACCEPTANCE_CHECKLIST.md`. This archive intentionally does not include `.git` history or any project secrets.
