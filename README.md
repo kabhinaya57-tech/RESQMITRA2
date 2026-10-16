@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RESQ MITRA — Flutter starter source
 
 This starter implements the first requested app flow:
@@ -34,3 +35,7 @@ This starter implements the first requested app flow:
 - `lib/main.dart` — Flutter screens, navigation, SOS flow, location lookup and SQLite history.
 - `assets/data/app_data.json` — app text, roles, SOS types and dashboard labels.
 - `android_setup/AndroidManifest_permissions.xml` — Android location permission snippet.
+=======
+# RESQMITRA2
+FIRT RESPONDER
+>>>>>>> origin/main
