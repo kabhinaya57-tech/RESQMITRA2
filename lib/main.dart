@@ -320,11 +320,17 @@ class _AuthPageState extends State<AuthPage> {
         }
       }
       appState.signedIn = true;
-      if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const PermissionsPage()));
+      if (mounted) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const PermissionsPage()));
+      }
     } on FirebaseAuthException catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Authentication failed.')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Authentication failed.')));
+      }
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign in: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign in: $e')));
+      }
     } finally { if (mounted) setState(() => busy = false); }
   }
   @override Widget build(BuildContext context) => Scaffold(body: SafeArea(child: Center(child: SingleChildScrollView(padding: const EdgeInsets.all(24), child: ConstrainedBox(
@@ -680,9 +686,11 @@ Future<void> _claimAndRevealPrivateDetails(BuildContext context, String incident
       actions: [TextButton(onPressed: () => Navigator.pop(detailsContext), child: const Text('CLOSE'))],
     ));
   } catch (e) {
-    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Could not accept incident or load authorized details: $e')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not accept incident or load authorized details: $e')),
+      );
+    }
   }
 }
 

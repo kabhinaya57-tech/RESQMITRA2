@@ -29,3 +29,8 @@ Post-upload source cleanup (2026-10-16):
 - Added explicit braces around simple one-line if/return/throw/await statements in the Dart source files to address the matching `curly_braces_in_flow_control_structures` style issue.
 - The reported `lib/splash_screen.dart:45` Future<void> list-element error cannot be reproduced against this archive because this archive does not contain `lib/splash_screen.dart`; it contains a splash screen widget inside `lib/main.dart`.
 - Flutter/Dart SDK is unavailable in this environment, so `flutter analyze`, `dart format`, `flutter test`, and APK build could not be run. Do not treat this archive as a verified successful Flutter build.
+
+Source cleanup in this packaging pass:
+- Wrapped four unbraced mounted-context if statements in lib/main.dart with explicit blocks.
+- Checked all Dart files in this archive: no Future.wait / Future<Object> expression or separate lib/splash_screen.dart exists, so the reported Future<void> list error from the separate RESQMITRA2 source cannot be reproduced or fixed in this archive.
+- Flutter/Dart SDK is unavailable here; analyzer/build status remains unverified.
