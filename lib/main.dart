@@ -186,9 +186,7 @@ class _SplashPageState extends State<SplashPage> {
     _controller = controller;
     try {
       await controller.initialize();
-      if (!mounted || _navigated) {
-      return;
-    }
+      if (!mounted || _navigated) return;
       await controller.setLooping(false);
       setState(() => _videoReady = true);
       await controller.play();
@@ -203,9 +201,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _openAuth() {
-    if (!mounted || _navigated) {
-      return;
-    }
+    if (!mounted || _navigated) return;
     _navigated = true;
     _fallbackTimer?.cancel();
     final Widget destination = Firebase.apps.isNotEmpty && FirebaseAuth.instance.currentUser != null
@@ -301,9 +297,7 @@ class _AuthPageState extends State<AuthPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a valid email address and a password of at least 8 characters.')));
       return;
     }
-    if (busy) {
-      return;
-    }
+    if (busy) return;
     setState(() => busy = true);
     try {
       if (AuthService.instance.configured) {
@@ -320,17 +314,11 @@ class _AuthPageState extends State<AuthPage> {
         }
       }
       appState.signedIn = true;
-      if (mounted) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const PermissionsPage()));
-      }
+      if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const PermissionsPage()));
     } on FirebaseAuthException catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Authentication failed.')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message ?? 'Authentication failed.')));
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign in: $e')));
-      }
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not sign in: $e')));
     } finally { if (mounted) setState(() => busy = false); }
   }
   @override Widget build(BuildContext context) => Scaffold(body: SafeArea(child: Center(child: SingleChildScrollView(padding: const EdgeInsets.all(24), child: ConstrainedBox(
@@ -671,9 +659,7 @@ Future<void> _claimAndRevealPrivateDetails(BuildContext context, String incident
   try {
     await SosRepository.instance.updateStatus(incidentId, 'accepted');
     final details = await SosRepository.instance.getPrivateDetails(incidentId);
-    if (!context.mounted) {
-      return;
-    }
+    if (!context.mounted) return;
     final location = details?['location'] as Map<String, dynamic>?;
     final locationText = location == null
         ? 'Location unavailable. Contact the requester through the configured authorized channel.'
@@ -686,11 +672,9 @@ Future<void> _claimAndRevealPrivateDetails(BuildContext context, String incident
       actions: [TextButton(onPressed: () => Navigator.pop(detailsContext), child: const Text('CLOSE'))],
     ));
   } catch (e) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not accept incident or load authorized details: $e')),
-      );
-    }
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Could not accept incident or load authorized details: $e')),
+    );
   }
 }
 
