@@ -1,74 +1,38 @@
-# ResQMitra Splash Screen
+# RESQ-MITRA — emergency response Flutter development build
 
-This package contains the Flutter splash-screen widget for ResQMitra.
+Branded emergency-response application with General SOS, Women SOS, Child SOS, Blood Needed (A+, A-, B+, B-, AB+, AB-, O+, O-), a confirmation flow, DO NOT CALL preference, location capture, responder queue UI, and Firebase-backed incident operations.
 
-## Files
-- `lib/splash_screen.dart` — animated splash screen.
-- `assets/images/README.txt` — where to put your original logo.
+**Safety notice:** This is a development candidate, not a certified emergency dispatch service. Push notifications, SMS, automated calling, live map tiles, and a durable offline queue are not implemented. In an immediate emergency, contact the appropriate official emergency service. Do not assume a request reached a responder unless the app explicitly confirms the relevant delivery state.
 
-## 1. Add your original logo
-Copy your provided logo image into:
+## Run
 
-`assets/images/resqmitra_logo.png`
-
-Use a PNG image if possible. Do not use a different logo if you want to preserve your original branding.
-
-## 2. Register assets in pubspec.yaml
-Inside the existing `flutter:` section, add the assets entry below. If an `assets:` section already exists, add the folder line to that section rather than creating a duplicate.
-
-```yaml
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/
-```
-
-Keep the indentation exactly as shown.
-
-## 3. Connect the splash screen
-Import the widget in your app's entry file (usually `lib/main.dart`):
-
-```dart
-import 'splash_screen.dart';
-```
-
-Then use it as the app's starting screen, adapting the names to the login and home widgets already in your project:
-
-```dart
-home: SplashScreen(
-  checkAuthentication: () async {
-    // TODO: Replace with your real authentication/session check.
-    return false;
-  },
-  destinationBuilder: (isLoggedIn) {
-    // Replace LoginScreen and HomeScreen with your existing widget names.
-    return isLoggedIn ? const HomeScreen() : const LoginScreen();
-  },
-),
-```
-
-`return false` is a placeholder and always routes to login. It does not check a real user session. Connect Firebase Auth or your current authentication system before relying on automatic login skipping.
-
-## 4. Test
-From the root folder of your Flutter project, run:
+Install Flutter stable and Android Studio, then:
 
 ```bash
 flutter pub get
+dart format --output=none --set-exit-if-changed lib test
 flutter analyze
-flutter run
+flutter test
+flutter build apk --debug
 ```
 
-## 5. Copy into your existing project
-Copy `lib/splash_screen.dart` into your project's `lib/` folder. Copy the logo into `assets/images/`. Review the `pubspec.yaml` change and the `main.dart` integration before running.
+If Android platform files are missing, run `flutter create . --platforms=android` from the project root, then rerun the commands.
 
-## 6. Upload to GitHub
-Run these commands from your Flutter project root:
+## Firebase
 
-```bash
-git status
-git add lib/splash_screen.dart pubspec.yaml assets/images/resqmitra_logo.png
-git commit -m "Add animated ResQMitra splash screen"
-git push origin main
-```
+Follow `docs/FIREBASE_SETUP.md`. Firebase Email/Password authentication is used when Firebase is configured. Without Firebase, the app allows local exploration only and clearly reports that SOS is not delivered.
 
-Only add `assets/images/resqmitra_logo.png` after you have placed the logo there. If GitHub returns a 403 permission error, the repository owner must grant your GitHub account write access or you must authenticate with an account that already has it. Do not upload passwords, API secrets, or private keys.
+Cloud Functions are under `functions/`. The trusted backend implements idempotent incident creation, separate private incident details, atomic responder claiming, and authorized status updates. Deploy only after configuring your own Firebase project and testing with emulators.
+
+## Source structure
+
+- `lib/main.dart` — existing app UI and navigation
+- `lib/models/` — typed user, responder, and emergency models
+- `lib/services/` — authentication and server-authoritative responder/SOS services
+- `functions/src/index.ts` — callable backend functions
+- `firestore.rules` — restrictive client access rules
+- `docs/` — setup and release acceptance criteria
+
+## Known limitations
+
+The app is not production-ready solely because it compiles. Review `docs/PRODUCTION_ACCEPTANCE_CHECKLIST.md`. This archive intentionally does not include `.git` history or any project secrets.
