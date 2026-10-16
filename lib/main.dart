@@ -186,7 +186,9 @@ class _SplashPageState extends State<SplashPage> {
     _controller = controller;
     try {
       await controller.initialize();
-      if (!mounted || _navigated) return;
+      if (!mounted || _navigated) {
+      return;
+    }
       await controller.setLooping(false);
       setState(() => _videoReady = true);
       await controller.play();
@@ -201,7 +203,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _openAuth() {
-    if (!mounted || _navigated) return;
+    if (!mounted || _navigated) {
+      return;
+    }
     _navigated = true;
     _fallbackTimer?.cancel();
     final Widget destination = Firebase.apps.isNotEmpty && FirebaseAuth.instance.currentUser != null
@@ -297,7 +301,9 @@ class _AuthPageState extends State<AuthPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a valid email address and a password of at least 8 characters.')));
       return;
     }
-    if (busy) return;
+    if (busy) {
+      return;
+    }
     setState(() => busy = true);
     try {
       if (AuthService.instance.configured) {
@@ -659,7 +665,9 @@ Future<void> _claimAndRevealPrivateDetails(BuildContext context, String incident
   try {
     await SosRepository.instance.updateStatus(incidentId, 'accepted');
     final details = await SosRepository.instance.getPrivateDetails(incidentId);
-    if (!context.mounted) return;
+    if (!context.mounted) {
+      return;
+    }
     final location = details?['location'] as Map<String, dynamic>?;
     final locationText = location == null
         ? 'Location unavailable. Contact the requester through the configured authorized channel.'

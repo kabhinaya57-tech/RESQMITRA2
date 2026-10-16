@@ -23,7 +23,9 @@ class SosRepository {
     required double? latitude, required double? longitude, required double? accuracyMeters,
     required String requesterId, bool highAlert = false,
   }) async {
-    if (!available) return null;
+    if (!available) {
+      return null;
+    }
     final id = _requestId();
     try {
       await FirebaseFunctions.instance.httpsCallable('createSos').call({
@@ -44,14 +46,19 @@ class SosRepository {
       // A timeout can occur after the server committed. Reconcile by the same request ID.
       try {
         final snapshot = await _sos.doc(id).get();
-        if (snapshot.exists && snapshot.data()?['requesterId'] == FirebaseAuth.instance.currentUser?.uid) return id;
+        if (snapshot.exists &&
+            snapshot.data()?['requesterId'] == FirebaseAuth.instance.currentUser?.uid) {
+          return id;
+        }
       } catch (_) { /* Keep the original submission error. */ }
       rethrow;
     }
   }
 
   Future<Map<String, dynamic>?> getPrivateDetails(String id) async {
-    if (!available) return null;
+    if (!available) {
+      return null;
+    }
     final snapshot = await FirebaseFirestore.instance.collection('sosPrivate').doc(id).get();
     return snapshot.data(); // Firestore rules restrict this to the owner or assigned responder.
   }
@@ -61,13 +68,17 @@ class SosRepository {
       .orderBy('createdAt', descending: true).limit(100).snapshots();
 
   Future<void> updateStatus(String id, String status) async {
-    if (!available) return;
+    if (!available) {
+      return;
+    }
     if (status == 'accepted') {
       await ResponderService.instance.claimIncident(id);
       return;
     }
     const allowed = {'en_route', 'arrived', 'cancelled', 'safe', 'resolved'};
-    if (!allowed.contains(status)) throw ArgumentError('Invalid SOS status');
+    if (!allowed.contains(status)) {
+      throw ArgumentError('Invalid SOS status');
+    }
     await ResponderService.instance.updateIncident(id, status);
   }
 }

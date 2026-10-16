@@ -9,7 +9,9 @@ class AuthService {
   User? get currentUser => configured ? FirebaseAuth.instance.currentUser : null;
 
   Future<UserCredential> register({required String email, required String password}) async {
-    if (!configured) throw StateError('Firebase is not configured. Demo sign-in is not a real account.');
+    if (!configured) {
+      throw StateError('Firebase is not configured. Demo sign-in is not a real account.');
+    }
     final result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email.trim(), password: password,
     );
@@ -18,16 +20,22 @@ class AuthService {
   }
 
   Future<UserCredential> signIn({required String email, required String password}) async {
-    if (!configured) throw StateError('Firebase is not configured. Demo sign-in is not a real account.');
+    if (!configured) {
+      throw StateError('Firebase is not configured. Demo sign-in is not a real account.');
+    }
     return FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password);
   }
 
   Future<void> resetPassword(String email) async {
-    if (!configured) throw StateError('Firebase is not configured.');
+    if (!configured) {
+      throw StateError('Firebase is not configured.');
+    }
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
   }
 
   Future<void> signOut() async {
-    if (configured) await FirebaseAuth.instance.signOut();
+    if (configured) {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 }
