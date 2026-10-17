@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    name: Build ResQMitra Android APK
+    name: Analyze and build ResQMitra Android APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -34,42 +34,31 @@ jobs:
           set -euo pipefail
           PUBSPEC_PATH="$(find . -type f -name pubspec.yaml -not -path './.git/*' -not -path '*/.dart_tool/*' -print -quit)"
           if [ -z "$PUBSPEC_PATH" ]; then
-            echo "ERROR: Could not find pubspec.yaml anywhere in the repository. Make sure the Flutter project files were uploaded."
+            echo 'ERROR: pubspec.yaml was not found. Upload the actual Flutter project source, not only this workflow.'
             exit 1
           fi
           FLUTTER_PROJECT_DIR="$(dirname "$PUBSPEC_PATH")"
           echo "Flutter project found at: $FLUTTER_PROJECT_DIR"
           echo "FLUTTER_PROJECT_DIR=$FLUTTER_PROJECT_DIR" >> "$GITHUB_ENV"
 
-      - name: Ensure Android platform exists
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd "$FLUTTER_PROJECT_DIR"
-          if [ ! -d android ]; then
-            echo "No android/ folder found. Generating the Android platform files..."
-            flutter create --platforms=android .
-          fi
-          if [ ! -d android ]; then
-            echo "ERROR: Android platform folder is still missing."
-            exit 1
-          fi
-
       - name: Install dependencies
         shell: bash
         run: |
+          set -euo pipefail
           cd "$FLUTTER_PROJECT_DIR"
           flutter pub get
 
       - name: Analyze Dart code
         shell: bash
         run: |
+          set -euo pipefail
           cd "$FLUTTER_PROJECT_DIR"
           flutter analyze
 
       - name: Build release APK
         shell: bash
         run: |
+          set -euo pipefail
           cd "$FLUTTER_PROJECT_DIR"
           flutter build apk --release
 
