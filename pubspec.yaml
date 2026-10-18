@@ -1,7 +1,6 @@
-name: resqmitra
-description: ResQMitra onboarding and role selection app
+name: resq_mitra
+description: ResQMitra onboarding and emergency response app
 publish_to: "none"
-
 version: 1.0.0+1
 
 environment:
@@ -10,6 +9,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Packages referenced by the analyzer log
+  google_maps_flutter: ^2.10.0
+  url_launcher: ^6.3.1
+  geolocator: ^13.0.2
+  supabase_flutter: ^2.8.0
+  firebase_core: ^3.8.1
+  firebase_auth: ^5.3.4
+  cloud_firestore: ^5.5.1
+  cloud_functions: ^5.1.5
   shared_preferences: ^2.3.2
 
 dev_dependencies:
